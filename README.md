@@ -9,7 +9,7 @@ you have to [create an app](https://www.linkedin.com/developers/apps?appStatus=a
 company. You can use the app to create long-lived tokens for accessing the REST API.
 
 **Note**: When [generating a token](https://www.linkedin.com/developers/tools/oauth/token-generator), make sure to 
-give it all available OAuth 2.0 scopes, as shown below ![Token OAuth scopes](scope.png)
+give it all available OAuth 2.0 scopes, as shown below ![Token OAuth scopes](scope.png). Also, Safari doesn't work well with this process, I'm using Firefox to do it.
 
 Once you have a token, you can use it to interact with the REST API. Execute a `GET` request on 
 https://api.linkedin.com/v2/userinfo to test it. Keep a copy of the `sub` property, you'll need it to be able to
