@@ -1,5 +1,5 @@
 annotated-types==0.7.0
-anyio==4.7.0
+anyio==4.14.2
 atproto==0.0.56
 certifi==2024.12.14
 cffi==1.17.1
