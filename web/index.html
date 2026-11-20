@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Write and publish an article post to LinkedIn and Bluesky.">
+  <title>LinkedSky — Compose</title>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="shell brand"><span class="brand-mark" aria-hidden="true"></span>LinkedSky</div>
+  </header>
+  <main class="shell">
+    <div class="intro">
+      <h1>Compose a post</h1>
+      <p>Share an article on LinkedIn, Bluesky, or both.</p>
+    </div>
+    <div class="workspace">
+      <form id="composer" class="panel composer" aria-label="Post composer">
+        <fieldset id="composer-fields">
+          <legend class="sr-only">Post details</legend>
+          <fieldset class="destinations" aria-describedby="configuration-help">
+            <legend>Publish to</legend>
+            <div class="options">
+              <label class="destination">
+                <span class="platform-mark linkedin" aria-hidden="true">in</span>
+                <span class="destination-text"><strong>LinkedIn</strong><small id="linkedin-state">Checking…</small></span>
+                <input type="checkbox" name="platforms" value="linkedin" aria-label="LinkedIn" disabled>
+              </label>
+              <label class="destination">
+                <span class="platform-mark bluesky" aria-hidden="true">b</span>
+                <span class="destination-text"><strong>Bluesky</strong><small id="bluesky-state">Checking…</small></span>
+                <input type="checkbox" name="platforms" value="bluesky" aria-label="Bluesky" disabled>
+              </label>
+            </div>
+            <p id="configuration-help" class="field-note" hidden>Add the missing credentials to <code>.env</code> and restart LinkedSky.</p>
+          </fieldset>
+          <div class="field">
+            <label for="description">Post text</label>
+            <textarea id="description" name="description" rows="5" placeholder="What stood out about this article?" aria-describedby="post-lengths length-error" required></textarea>
+            <div id="post-lengths" class="post-lengths" hidden>
+              <span id="linkedin-length"></span>
+              <span id="bluesky-length"></span>
+            </div>
+          </div>
+          <div class="field">
+            <label for="hashtags">Hashtags <span>Optional</span></label>
+            <input id="hashtags" name="hashtags" type="text" placeholder="#technology #opensource" aria-describedby="length-error">
+          </div>
+          <div class="article-fields">
+            <div class="field">
+              <label for="url">Article URL</label>
+              <input id="url" name="url" type="url" placeholder="https://example.com/article" aria-describedby="length-error" required>
+            </div>
+            <div class="field">
+              <label for="title">Article title</label>
+              <input id="title" name="title" type="text" placeholder="Enter the article title" required>
+            </div>
+          </div>
+          <p id="length-error" class="field-note error" role="status" hidden></p>
+        </fieldset>
+        <div class="form-footer">
+          <button type="submit" id="publish" disabled>Publish post</button>
+          <div id="results" role="status" aria-live="polite" aria-atomic="true"></div>
+        </div>
+      </form>
+      <aside class="panel preview" aria-labelledby="preview-heading">
+        <div class="preview-header">
+          <h2 id="preview-heading">Preview</h2>
+          <div class="preview-switch" role="group" aria-label="Preview platform">
+            <button type="button" data-preview="linkedin" aria-pressed="true">LinkedIn</button>
+            <button type="button" data-preview="bluesky" aria-pressed="false">Bluesky</button>
+          </div>
+        </div>
+        <div class="post-card">
+          <div class="post-header">
+            <div id="preview-mark" class="platform-mark linkedin" aria-hidden="true">in</div>
+            <div><strong id="preview-platform">LinkedIn</strong><span>Post preview</span></div>
+          </div>
+          <p id="preview-description" class="placeholder">Your post text will appear here.</p>
+          <p id="preview-tags" hidden></p>
+          <div class="article-card">
+            <span class="article-mark" aria-hidden="true"></span>
+            <div><strong id="preview-title">Article title</strong><span id="preview-url">example.com</span></div>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>

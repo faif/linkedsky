@@ -12,8 +12,9 @@ company. You can use the app to create long-lived tokens for accessing the REST 
 give it all available OAuth 2.0 scopes, as shown below ![Token OAuth scopes](scope.png). Also, Safari doesn't work well with this process, I'm using Firefox to do it.
 
 Once you have a token, you can use it to interact with the REST API. Execute a `GET` request on 
-https://api.linkedin.com/v2/userinfo to test it. Keep a copy of the `sub` property, you'll need it to be able to
-use `LinkedSky`.
+https://api.linkedin.com/v2/userinfo using the same token you will publish with. Set `LINKEDIN_AUTHOR` to
+`urn:li:person:<sub>` using the exact `sub` value returned for that token. Publishing to a personal profile requires
+`w_member_social`. [LinkedIn Posts API](https://learn.microsoft.com/en-us/linkedin/marketing/community-management/shares/posts-api)
 
 ### References
 [LinkedIn API access documentation](https://www.linkedin.com/help/linkedin/answer/a526048/accessing-linkedin-apis?lang=en)
@@ -26,19 +27,43 @@ this part is conveniently managed by the SDK, when using it.
 [Bluesky SDK documentation](https://docs.bsky.app/docs/get-started)
 
 ## Usage
-You are advised to create a virtual environment, to avoid messing with your system's Python:
+Use Python 3.15 to create a virtual environment and install the dependencies.
 ```bash
-python -m venv linkedskyenv
+python3.15 -m venv linkedskyenv
 source linkedskyenv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
-Create a `.env` file and define the following variables (replace the `[]` placeholders):
-```text
-LINKEDIN_AUTHOR=urn:li:person:[SUB]
-LINKEDIN_TOKEN=[TOKEN]
-BSKY_USER=[USER]
-BSKY_PASS=[PASSWORD]
+If you don’t already have a `.env` file, copy the example and replace the placeholders with your own values.
+```bash
+cp .env.example .env
 ```
 
-LinkedSky is an interactive terminal application, and starting it is a matter of executing `python linkedsky.py`.
+### Web UI
+
+Start the local web composer and open `http://127.0.0.1:8765` in your browser.
+
+```bash
+python linkedsky_web.py
+```
+
+Enter the post text and article details, choose LinkedIn, Bluesky, or both, then publish. The composer shows the result for each platform and enables a platform when its credentials are set in `.env`. If port 8765 is in use, run `python linkedsky_web.py --port 8766` and open the address printed by the server.
+
+### Terminal
+
+Run `python linkedsky.py` to use the interactive terminal prompts.
+
+### Post length limits
+
+Post text includes hashtags and the spaces added before them. The Web UI shows live counts, and both the Web UI and terminal check the selected platforms before sending a post.
+
+- LinkedIn allows up to 3,000 characters in post text and 8,192 characters in the article URL. [LinkedIn UGC Post API](https://learn.microsoft.com/en-us/linkedin/compliance/integrations/shares/ugc-post-api)
+- Bluesky allows up to 300 visible characters (grapheme clusters) and 3,000 UTF-8 bytes in post text. Each hashtag can contain up to 64 grapheme clusters and 640 bytes, excluding `#`. Article URLs can contain up to 8,192 bytes. [Post schema](https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/feed/post.json) · [Hashtag schema](https://github.com/bluesky-social/atproto/blob/main/lexicons/app/bsky/richtext/facet.json) · [AT Protocol Lexicon](https://atproto.com/specs/lexicon)
+
+## Tests
+
+With the dependencies installed, run the unit tests from the project directory.
+
+```bash
+python -m unittest discover -v
+```
